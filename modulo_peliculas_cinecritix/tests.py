@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
 from django.urls import reverse
-from .models import Pelicula
+from .models import *
 from users_cinecritix.models import *
 from modulo_peliculas_cinecritix import *
 from .serializer import PeliculaSerializer
@@ -27,6 +27,7 @@ class TusPruebas(TestCase):
             duracion_pelicula=120,
             fecha_estreno_pelicula='2023-01-01',
         )
+    
 
     def create_registered_user(self):
         # Crear un usuario registrado para utilizar en la prueba de inicio de sesión
@@ -91,14 +92,14 @@ class TusPruebas(TestCase):
     def test_agregar_pelicula_favoritos_con_datos_validos(self):
         url = reverse('peliculas:agregar_favorita_pelicula') 
         data_valida = {
-            'usuario': self.registered_user.id,  
-            'pelicula': self.sample_pelicula.id,
+            'usuario': self.registered_user.id,
+            'pelicula': self.sample_pelicula.id,  # Utiliza el nombre de campo correcto, que es "pelicula"
             'fecha': '2023-10-22',
         }
         response = self.client.post(url, data_valida, format='json')
         self.assertEqual(response.status_code, 201)
 
-    
+
     def test_agregar_pelicula_favoritos_con_datos_invalidos(self):
         url = reverse('peliculas:agregar_favorita_pelicula') 
         data_valida = {
@@ -131,4 +132,35 @@ class TusPruebas(TestCase):
         response = self.client.post(url, data_valida, format='json')
         self.assertEqual(response.status_code, 400)
 
+    def test_promedio_puntuacion_pelicula_con_puntuaciones(self):
+
+        # Crear algunas puntuaciones
+        Puntuacion_pelicula.objects.create(usuario= self.registered_user,pelicula=self.sample_pelicula, fecha='2023-10-22', puntuacion=4)
+        Puntuacion_pelicula.objects.create(usuario= self.registered_user ,pelicula=self.sample_pelicula, fecha='2023-10-22', puntuacion=5)
+        Puntuacion_pelicula.objects.create(usuario= self.registered_user ,pelicula=self.sample_pelicula, fecha='2023-10-22', puntuacion=3)
+
+        url = reverse('peliculas:promedio_total_puntuacion_pelicula', args=[self.sample_pelicula.id])
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['promedio'], 4.0)
+
+    def test_listar_peliculas_favoritas_usuario(self):
+
+        Favorito_pelicula.objects.create(usuario=self.registered_user, pelicula=self.sample_pelicula, fecha='2023-10-22')
+
+        url = reverse('peliculas:listar_peliculas_favoritas_usuario', args=[self.registered_user.id])
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)  
+
+
+    def test_listar_comentarios_peliculas_usuario(self):
+        Comentarios_pelicula.objects.create(usuario=self.registered_user, pelicula=self.sample_pelicula, fecha= '2023-10-22', comentario="Un buen comentario")
+
+        url = reverse('peliculas:listar_comentarios_peliculas_usuario', args=[self.registered_user.id])
+        response = self.client.get(url)
     
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)

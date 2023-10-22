@@ -14,7 +14,7 @@ class Crear_pelicula(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class promedio_total_puntuacioon_pelicula(APIView):
+class Promedio_total_puntuacioon_pelicula(APIView):
     def get(self, request, pelicula_id):
         puntuaciones = Puntuacion_pelicula.objects.filter(pelicula=pelicula_id)
         total_puntuaciones = puntuaciones.count()
@@ -63,7 +63,7 @@ class Agregar_comentario_pelicula(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class listar_peliculas_favoritas_usuario(APIView):
+class Listar_peliculas_favoritas_usuario(APIView):
     def get(self, request, usuario_id):
         favoritas = Favorito_pelicula.objects.filter(usuario=usuario_id)
         peliculas = [fav.pelicula for fav in favoritas]
