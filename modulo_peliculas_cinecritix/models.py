@@ -11,8 +11,8 @@ class Pelicula(models.Model):
     duracion_pelicula = models.IntegerField(null=False, blank=False, default=0)
     fecha_estreno_pelicula = models.DateField()
     portada_pelicula = models.ImageField(null=True)
-    genero = models.ManyToManyField(Genero, related_name='genero_peliculas', null=False)
-    actores = models.ManyToManyField(Actor, related_name='peliculas_actuadas', null=False)
+    genero = models.ManyToManyField(Genero, related_name='genero_peliculas')
+    actores = models.ManyToManyField(Actor, related_name='peliculas_actuadas')
 
     ##link de pelicula 
     ##link de trailer
@@ -25,13 +25,13 @@ class Puntuacion_pelicula(models.Model):
     puntuacion= models.IntegerField(null=False, blank=False, default=0)
 
 class Favorito_pelicula(models.Model):
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False)
-    pelicula=  models.ForeignKey(Pelicula, on_delete=models.CASCADE, null=False)
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    pelicula=  models.ForeignKey(Pelicula, on_delete=models.CASCADE,  default=0)
     fecha= models.DateField()
 
 class Comentarios_pelicula(models.Model):
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False)
-    pelicula= models.ForeignKey(Pelicula, on_delete=models.CASCADE, null=False)
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    pelicula= models.ForeignKey(Pelicula, on_delete=models.CASCADE)
     fecha= models.DateField()
     comentario= models.TextField()
 

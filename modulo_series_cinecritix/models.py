@@ -11,7 +11,7 @@ class Serie(models.Model):
     director_serie = models.CharField(max_length=30, blank=False, null=False)
     sipnosis_serie = models.CharField(max_length=250, blank=False, null=False)
     fecha_estreno_serie = models.DateField()
-    portada_serie = models.ImageField()
+   # portada_serie = models.ImageField()
     generos = models.ManyToManyField(Genero, related_name='generos_serie')
     actores = models.ManyToManyField(Actor, related_name='series_actuadas')
     ##link de serie 

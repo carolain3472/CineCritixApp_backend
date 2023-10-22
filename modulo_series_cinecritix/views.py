@@ -71,7 +71,7 @@ class listar_serie_favoritas_usuario(APIView):
 
 class listar_comentarios_serie_usuario(APIView):
     def get(self, request, usuario_id):
-        comentarios = Comentarios_pelicula.objects.filter(usuario=usuario_id)
+        comentarios = Comentarios_serie.objects.filter(usuario=usuario_id)
         serializer = ComentarioSerieSerializer(comentarios, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -120,7 +120,7 @@ class Agregar_comentario_capitulo(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class listar_todos_comentarios_capitulo(APIView):
-    def get(self, request, serie_id):
+    def get(self, request, capitulo_id):
         comentarios = Comentarios_capitulo.objects.filter(capitulo=capitulo_id)
         serializer = ComentarioCapituloSerializer(comentarios, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -139,7 +139,7 @@ class listar_comentarios_capitulo_usuario(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class promedio_total_puntuacioon_capitulo(APIView):
-    def get(self, request, serie_id):
+    def get(self, request, capitulo_id):
         puntuaciones = Puntuacion_capitulo.objects.filter(capitulo=capitulo_id)
         total_puntuaciones = puntuaciones.count()
         if total_puntuaciones == 0:
