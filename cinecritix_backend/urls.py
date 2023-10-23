@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', include(('users_cinecritix.urls', 'default'))),
     path('peliculas/', include(('modulo_peliculas_cinecritix.urls', 'peliculas'))),
-  #  path('series/', include(('modulo_series_cinecritix.urls', 'series'))),
+    path('series/', include(('modulo_series_cinecritix.urls', 'series'))),
 ]
