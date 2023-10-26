@@ -16,3 +16,5 @@ python-dotenv==1.0.0
 python-decouple
 pandas
 coreapi
+Pillow
+dj-database-url
