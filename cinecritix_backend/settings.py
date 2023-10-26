@@ -30,9 +30,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOST = os.environ.get("ALLOWED_HOSTS").split(" ")
+#ALLOWED_HOST = os.environ.get("ALLOWED_HOSTS").split(" ")
 
-CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = [
+    'cinecritixbackend.onrender.com',
+    # Agrega cualquier otro host que necesites permitir
+]
+
 
 
 
