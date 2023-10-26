@@ -12,7 +12,6 @@ coreapi
 django-rest-auth
 django-allauth
 django-filter
-python-dotenv==1.0.0
 python-decouple
 pandas
 coreapi
