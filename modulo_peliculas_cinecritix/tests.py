@@ -5,8 +5,9 @@ from .models import *
 from users_cinecritix.models import *
 from modulo_peliculas_cinecritix import *
 from .serializer import PeliculaSerializer
+from users_cinecritix.serializer import ActorSerializer
 
-class TusPruebas(TestCase):
+class PruebasPeliculas(TestCase):
 
     def setUp(self):
         self.client = APIClient()
@@ -15,6 +16,8 @@ class TusPruebas(TestCase):
         # Crear actores
         self.actor1 = Actor.objects.create(nombre_actor='Actor 1', fecha_nacimiento='1990-01-01', biografia='Biografía Actor 1', nacionalidad='Nacionalidad Actor 1')
         self.actor2 = Actor.objects.create(nombre_actor='Actor 2', fecha_nacimiento='1985-03-15', biografia='Biografía Actor 2', nacionalidad='Nacionalidad Actor 2')
+        self.actor3 = Actor.objects.create(nombre_actor='Actor 3', fecha_nacimiento='1975-03-5', biografia='Biografía Actor 3', nacionalidad='Nacionalidad Actor 3')
+        self.actor4 = Actor.objects.create(nombre_actor='Actor 4', fecha_nacimiento='1975-04-5', biografia='Biografía Actor 4', nacionalidad='Nacionalidad Actor 4')
         
         # Crear géneros
         self.genero1 = Genero.objects.create(nombre_genero='Drama', descripcion_genero='Descripción Drama')
@@ -27,6 +30,17 @@ class TusPruebas(TestCase):
             duracion_pelicula=120,
             fecha_estreno_pelicula='2023-01-01',
         )
+        
+        self.sample2_pelicula = Pelicula.objects.create(
+            titulo_pelicula='Ejemplo de película2',
+            director_pelicula='Director de ejemplo2',
+            sipnosis_pelicula='Sinopsis de ejemplo2',
+            duracion_pelicula=120,
+            fecha_estreno_pelicula='2023-01-01',
+        )
+
+        self.sample2_pelicula.actores.set([ self.actor1,  self.actor2,  self.actor3,  self.actor4])
+        self.sample2_pelicula.genero.set([self.genero1, self.genero2])
     
 
     def create_registered_user(self):
@@ -53,7 +67,7 @@ class TusPruebas(TestCase):
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(Pelicula.objects.count(), 2)
+        self.assertEqual(Pelicula.objects.count(), 3)
 
     def test_creacion_pelicula_fallida(self):
         url = reverse('peliculas:crear_pelicula')  # Asegúrate de que esta sea la URL correcta
@@ -164,3 +178,46 @@ class TusPruebas(TestCase):
     
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
+
+    def test_listar_comentarios_pelicula(self):
+        Comentarios_pelicula.objects.create(usuario=self.registered_user, pelicula=self.sample_pelicula, fecha= '2023-10-22', comentario="Un buen comentario")
+        Comentarios_pelicula.objects.create(usuario=self.registered_user, pelicula=self.sample_pelicula, fecha= '2023-10-22', comentario="Un mal comentario")
+
+        url = reverse('peliculas:listar_comentarios_pelicula', args=[self.sample_pelicula.id])
+        response = self.client.get(url)
+    
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 2)
+
+    def test_listar_todas_las_peliculas(self):
+        url = reverse("peliculas:listar_todas_peliculas")
+        response = self.client.get(url)
+        peliculas = Pelicula.objects.all()
+        serializer = PeliculaSerializer(peliculas, many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_listar_actores_de_pelicula(self):
+        url = reverse("peliculas:listar_actores_de_pelicula", args=[self.sample2_pelicula.id])
+        response = self.client.get(url)
+        actores = self.sample2_pelicula.actores.all()
+        serializer = ActorSerializer(actores, many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_filtrar_peliculas_por_actor(self):
+        url = reverse("peliculas:filtrar_peliculas_actor", args=[self.actor1.id])
+        response = self.client.get(url)
+        peliculas = Pelicula.objects.filter(actores=self.actor1)
+        serializer = PeliculaSerializer(peliculas, many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)
+
+    def test_filtrar_peliculas_por_genero(self):
+        url = reverse("peliculas:filtrar_peliculas_genero", args=[self.genero1.id])
+        response = self.client.get(url)
+        peliculas = Pelicula.objects.filter(genero=self.genero1)
+        serializer = PeliculaSerializer(peliculas, many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, 200)
