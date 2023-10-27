@@ -27,6 +27,8 @@ class FavoritoSerieSerializer(serializers.ModelSerializer):
         model =  Favorito_serie
         fields = '__all__'
 
+   
+
 class ComentarioSerieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comentarios_serie
