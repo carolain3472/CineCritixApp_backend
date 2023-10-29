@@ -65,7 +65,7 @@ class RegisterUserViewTestCase(TestCase):
         }
 
         response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)  # Verifica que la respuesta tenga el código de estado correcto
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)  # Verifica que la respuesta tenga el código de estado correcto
 
         # Verifica que no se haya creado el usuario en la base de datos debido al email inválido
         with self.assertRaises(CustomUser.DoesNotExist):

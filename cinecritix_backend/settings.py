@@ -26,16 +26,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-SECRET_KEY = os.environ.get("SECRET_KEY", 'django-insecure-%jwtaiu1aeh4t(u7k*i99t31$1s=)9-)sq1q-77lo4$v8=^4w^')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
-
-
+#SECRET_KEY = 'SFXGHDFXBGR852S613DV1S65HSR12H1D65GB1X5S1DEG51RSBFS1B5'
+#DEBUG = True
 
 ALLOWED_HOSTS = [
-    'cinecritixbackend.onrender.com',
+    '*'
     # Agrega cualquier otro host que necesites permitir
 ]
+
+CORS_ALLOWED_ALL_ORIGINS = True
 
 # Application definition
 
@@ -87,7 +89,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'cinecritix_backend.wsgi.application'
 
 # Database URL
-database_url = os.environ.get("DATABASE_URL")
+
 
 # Database configuration using dj-database-url
 
@@ -97,6 +99,9 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Ruta a la base de datos
     }
 }
+
+database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"]=dj_database_url.parse(database_url)
 
 AUTH_USER_MODEL = 'users_cinecritix.CustomUser'
 
