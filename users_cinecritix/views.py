@@ -184,7 +184,7 @@ class RegisterUserView(APIView):
             try:
                 validate_email(email)
             except ValidationError:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response(status=status.HTTP_400_BAD_REQUEST)
                  
 
             superuser = CustomUser.objects.create_superuser(
