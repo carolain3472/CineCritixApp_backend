@@ -198,7 +198,7 @@ class RegisterUserView(APIView):
             superuser.is_staff = True
             superuser.is_superuser = True
          
-            return Response( status=status.HTTP_200_OK)
+            return Response({'valid': True}, status=status.HTTP_200_OK)
         except:
              return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
  
