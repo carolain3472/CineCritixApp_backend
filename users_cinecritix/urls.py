@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .views import LoginView
 from .views import RegisterUserView
 from .views import Logout
-from .views import UpdateContraseña
+from .views import UpdateContraseña, Saludo
 from rest_framework.documentation import include_docs_urls
 
 router= routers.DefaultRouter()
@@ -19,4 +19,5 @@ urlpatterns = [
     path('register/', RegisterUserView.as_view(), name="register"),
     path('update_contra/', UpdateContraseña.as_view(), name='update_contra'),
     path('logout/', Logout.as_view(), name='logout'),
+    path('saludo/', Saludo.as_view(), name='saludo'),
 ]

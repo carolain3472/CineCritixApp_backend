@@ -27,7 +27,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 #SECRET_KEY = 'SFXGHDFXBGR852S613DV1S65HSR12H1D65GB1X5S1DEG51RSBFS1B5'
 #DEBUG = True
@@ -103,6 +102,7 @@ DATABASES = {
 database_url = os.environ.get("DATABASE_URL")
 DATABASES["default"]=dj_database_url.parse(database_url)
 
+#"postgres://cinecritixapp_bd_user:XQCQrEZrRJ3MGlKZHt3Yi2vj5zEoFbyh@dpg-cksts30168ec73ears40-a.oregon-postgres.render.com/cinecritixapp_bd"
 AUTH_USER_MODEL = 'users_cinecritix.CustomUser'
 
 # Password validation
