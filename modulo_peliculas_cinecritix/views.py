@@ -3,6 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from .models import Pelicula, Puntuacion_pelicula, Favorito_pelicula, Comentarios_pelicula
 from .serializer import PeliculaSerializer, PuntuacionPeliculaSerializer, FavoritoPeliculaSerializer, ComentariosPeliculaSerializer
+from users_cinecritix.serializer import ActorSerializer
+from users_cinecritix.models import Actor, Genero
 
 class Crear_pelicula(APIView):
     def post(self, request):
@@ -75,4 +77,45 @@ class listar_comentarios_peliculas_usuario(APIView):
         comentarios = Comentarios_pelicula.objects.filter(usuario=usuario_id)
         serializer = ComentariosPeliculaSerializer(comentarios, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class ListarTodasLasPeliculas(APIView):
+    def get(self, request):
+        peliculas = Pelicula.objects.all()
+        serializer = PeliculaSerializer(peliculas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# Listar los actores de una película
+class ListarActoresDePelicula(APIView):
+    def get(self, request, pelicula_id):
+        pelicula = Pelicula.objects.get(pk=pelicula_id)
+        actores = pelicula.actores.all()
+        serializer = ActorSerializer(actores, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+# Listar todos los actores
+class ListarActores(APIView):
+    def get(self, request):
+        actores = Actor.objects.all()
+        serializer = ActorSerializer(actores, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+# Filtrar películas por actor
+class FiltrarPeliculasPorActor(APIView):
+    def get(self, request, actor_id):
+        actor = Actor.objects.get(pk=actor_id)
+        peliculas = Pelicula.objects.filter(actores=actor)
+        serializer = PeliculaSerializer(peliculas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+# Filtrar películas por género
+class FiltrarPeliculasPorGenero(APIView):
+    def get(self, request, genero_id):
+        genero = Genero.objects.get(pk=genero_id)
+        peliculas = Pelicula.objects.filter(genero=genero)
+        serializer = PeliculaSerializer(peliculas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
     

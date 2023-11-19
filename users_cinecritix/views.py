@@ -190,7 +190,7 @@ class RegisterUserView(APIView):
             try:
                 validate_email(email)
             except ValidationError:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response(status=status.HTTP_400_BAD_REQUEST)
                  
 
             superuser = CustomUser.objects.create_superuser(
@@ -206,7 +206,7 @@ class RegisterUserView(APIView):
          
             return Response({'valid': True}, status=status.HTTP_200_OK)
         except:
-             return Response(status=status.HTTP_404_NOT_FOUND)
+             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
  
 class UpdateContraseña(APIView):
     """
