@@ -110,6 +110,9 @@ class Login(FormView):
             return super(Login,self).form_valid(form)
         
 class LoginView(APIView):
+
+    permission_classes = [AllowAny]  
+    authentication_classes = [] 
         
     """
     Esta vista permite a los usuarios autenticarse mediante una solicitud POST a través de API.
@@ -120,7 +123,7 @@ class LoginView(APIView):
     """
     def post(self, request):
         email = request.data.get('email')
-        password = request.data.get('password')
+        password = request.data.get('contrasena')
 
         try:
             # Buscar al usuario por cédula en la base de datos
@@ -166,6 +169,14 @@ class LoginView(APIView):
 
         return Response({'valid': False})
 
+
+
+class Saludo(APIView):
+    def post(self, request):
+        nombre = request.data.get('nombre')
+        print(nombre)
+        return Response({"mensaje": f"Hola, {nombre}!"}, status=status.HTTP_200_OK)
+    
 class RegisterUserView(APIView):
         
     """
@@ -176,8 +187,8 @@ class RegisterUserView(APIView):
     Métodos:
         - post: Maneja la solicitud POST para registrar un nuevo usuario.
     """
-    permission_classes = [AllowAny]  # Permite el acceso sin autenticación
-    authentication_classes = []  # No se requiere autenticación
+    permission_classes = [AllowAny]  
+    authentication_classes = []  
 
     def post(self, request):
         serializer = UsuarioSerializer(data=request.data)
