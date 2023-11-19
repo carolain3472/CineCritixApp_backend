@@ -149,7 +149,13 @@ class LoginView(APIView):
                     print(user_data)
                   
                 
-                    return Response({'valid': True, 'token': token.key, 'user': user_data})
+                    return Response({'valid': True, 'token': token.key, 
+                                     'user_id': user.id,
+                                     'user_documento': user.documento,
+                                     'user_nombre': user.nombre,
+                                     'user_email': user.email,
+
+                                     })
 
                 
 
