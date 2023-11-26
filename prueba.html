@@ -1,0 +1,27 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+    <div id="user-profile">
+        <img id="profile-picture" src="" alt="Profile Picture">
+    </div>
+
+    <script>
+        // Hacer la solicitud a la API de Django Rest Framework
+        fetch('http://127.0.0.1:8000/user/profile/27/')
+            .then(response => response.json())
+            .then(data => {
+                // Actualizar la imagen de perfil en la página
+                const profilePicture = document.getElementById('profile-picture');
+                profilePicture.src = data.foto_perfil;
+            })
+            .catch(error => console.error('Error fetching user profile:', error));
+    </script>
+</body>
+</html>
