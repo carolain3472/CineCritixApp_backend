@@ -70,23 +70,24 @@ class validar_token(APIView):
         now_minus_expiry_time = timezone.now() - timedelta(hours=password_reset_token_validation_time)
         clear_expired(now_minus_expiry_time)
 
+        extend_token1=ExtendToken.objects.filter(token=reset_password_token.key).first()
+
         if not ExtendToken.objects.filter(token=reset_password_token.key).exists():
-            # Crear un nuevo objeto ExtendToken si el token no está en la base de datos
+           
             extend_token = ExtendToken.objects.create(
                 token=reset_password_token.key,
                 count_integer=0
             )
-        # Si el token ha expirado, lo eliminamos
+    
         if reset_password_token.created_at <= now_minus_expiry_time:
             ExtendToken.objects.filter(token=reset_password_token.key).delete()
             reset_password_token.delete()
 
-            return Response({"mensaje": "El token ha expirado"},
+            return Response({"mensaje": "El token ha expirado", "contador":extend_token1.count_integer},
                             status=status.HTTP_403_FORBIDDEN)
 
         if reset_password_token.key != token:
-            print("Entra acaaaa")
-            extend_token1=ExtendToken.objects.filter(token=reset_password_token.key).first()
+         
             extend_token1.count_integer = extend_token1.count_integer + 1
             extend_token1.save()
 
@@ -98,10 +99,10 @@ class validar_token(APIView):
                 usuario.save()
                 tiempo= usuario.deactivated_timestamp
 
-                return Response({"mensaje": "Ya no tienes mas intentos, token eliminado", "tiempo": tiempo},
+                return Response({"mensaje": "Ya no tienes mas intentos, token eliminado",  "contador":extend_token1.count_integer},
                             status=status.HTTP_403_FORBIDDEN)
 
-            return Response({"mensaje": "Fallo en obtener token", "token": token, "token_correcto": reset_password_token.key, "contador":extend_token1.count_integer},
+            return Response({"mensaje": "Fallo en obtener token",  "contador":extend_token1.count_integer},
                             status=status.HTTP_406_NOT_ACCEPTABLE)
         
         else:
@@ -128,7 +129,7 @@ class validar_token(APIView):
             # Delete all password reset tokens for this user
             ResetPasswordToken.objects.filter(user=reset_password_token.user).delete()
 
-        return Response({'status': 'OK'})
+        return Response({'mensaje': 'OK',  "contador":extend_token1.count_integer})
 
 
 class UsuariosList(viewsets.ModelViewSet):
