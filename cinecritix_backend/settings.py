@@ -106,7 +106,7 @@ DATABASES = {
 }
 
 database_url = os.environ.get("DATABASE_URL")
-DATABASES["default"]=dj_database_url.parse(database_url)
+DATABASES["default"]=dj_database_url.parse("postgres://cinecritixapp_bd_wdxx_user:NyMHPaTSWbmBtbML0Za1cKaEF3dpxfAq@dpg-clha67fjc5ks73ekhh3g-a/cinecritixapp_bd_wdxx")
 #DATABASES["default"]=dj_database_url.parse("postgres://cinecritixapp_bd_user:XQCQrEZrRJ3MGlKZHt3Yi2vj5zEoFbyh@dpg-cksts30168ec73ears40-a.oregon-postgres.render.com/cinecritixapp_bd")
 
 #"postgres://cinecritixapp_bd_user:XQCQrEZrRJ3MGlKZHt3Yi2vj5zEoFbyh@dpg-cksts30168ec73ears40-a.oregon-postgres.render.com/cinecritixapp_bd"
