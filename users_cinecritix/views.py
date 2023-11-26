@@ -18,7 +18,7 @@ from django.db.models import Q
 from .serializer import UsuarioSerializer
 from rest_framework import viewsets
 from rest_framework.generics import RetrieveAPIView
-from .models import CustomUser
+from .models import CustomUser, ExtendToken
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from rest_framework.views import APIView
@@ -70,18 +70,28 @@ class validar_token(APIView):
         now_minus_expiry_time = timezone.now() - timedelta(hours=password_reset_token_validation_time)
         clear_expired(now_minus_expiry_time)
 
+        if not ExtendToken.objects.filter(token=reset_password_token.key).exists():
+            # Crear un nuevo objeto ExtendToken si el token no está en la base de datos
+            extend_token = ExtendToken.objects.create(
+                token=reset_password_token.key,
+                count_integer=0
+            )
         # Si el token ha expirado, lo eliminamos
         if reset_password_token.created_at <= now_minus_expiry_time:
+            ExtendToken.objects.filter(token=reset_password_token.key).delete()
             reset_password_token.delete()
+
             return Response({"mensaje": "El token ha expirado"},
                             status=status.HTTP_403_FORBIDDEN)
 
         if reset_password_token.key != token:
             print("Entra acaaaa")
-            reset_password_token.count_integer = reset_password_token.count_integer + 1
-            reset_password_token.save()
+            extend_token1=ExtendToken.objects.filter(token=reset_password_token.key).first()
+            extend_token1.count_integer = extend_token1.count_integer + 1
+            extend_token1.save()
 
-            if reset_password_token.count_integer>=4:
+            if extend_token1.count_integer>=4:
+                ExtendToken.objects.filter(token=reset_password_token.key).delete()
                 ResetPasswordToken.objects.filter(user=reset_password_token.user).delete()
                 usuario.is_active=False
                 usuario.deactivated_timestamp= timezone.now()
