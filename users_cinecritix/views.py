@@ -263,9 +263,9 @@ class LoginView(APIView):
                                      'user_id': user.id,
                                      'user_documento': user.documento,
                                      'user_nombre': user.nombre,
+                                     'user_apellido': user.apellido,
                                      'user_email': user.email,
-                   
-
+                                     'user_profile': user.foto_perfil
                                      })
             
         except CustomUser.DoesNotExist:
