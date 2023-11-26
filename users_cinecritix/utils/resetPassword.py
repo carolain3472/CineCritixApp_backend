@@ -4,6 +4,8 @@ from sendgrid import SendGridAPIClient
 import os
 from datetime import datetime
 
+from cinecritix_backend.settings import EMAIL_SENDER, SEND_API
+
 def sendResetPasswordEmail(reset_password_token):
     # Obtén el token como cadena
     forgot_password_token = str(reset_password_token.key)
@@ -18,13 +20,13 @@ def sendResetPasswordEmail(reset_password_token):
     email_html_content = f"<html><body><p>{greetings}</p>Por favor, usa este token para CineCritix App:<b> {forgot_password_token}</b></body></html>"
 
     message = Mail(
-        from_email=config('EMAIL_SENDER'),
+        from_email=EMAIL_SENDER,
         to_emails=[user.email],
         subject=f"Recuperar contraseña de CineCritix App. {str(datetime.now())}",
         html_content=email_html_content
     )
 
-    sendgrid_client = SendGridAPIClient(api_key=config('SEND_API'))
+    sendgrid_client = SendGridAPIClient(api_key=SEND_API)
 
     response = sendgrid_client.send(message)
 
