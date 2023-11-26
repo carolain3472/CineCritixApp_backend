@@ -101,7 +101,7 @@ class validar_token(APIView):
                 return Response({"mensaje": "Ya no tienes mas intentos, token eliminado", "tiempo": tiempo},
                             status=status.HTTP_403_FORBIDDEN)
 
-            return Response({"mensaje": "Fallo en obtener token", "token": token, "token_correcto": reset_password_token.key, "expiracion":now_minus_expiry_time},
+            return Response({"mensaje": "Fallo en obtener token", "token": token, "token_correcto": reset_password_token.key, "contador":extend_token1.count_integer},
                             status=status.HTTP_406_NOT_ACCEPTABLE)
         
         else:
