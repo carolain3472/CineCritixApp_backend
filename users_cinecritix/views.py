@@ -70,7 +70,7 @@ class validar_token(APIView):
         now_minus_expiry_time = timezone.now() - timedelta(hours=password_reset_token_validation_time)
         clear_expired(now_minus_expiry_time)
 
-        extend_token1=ExtendToken.objects.filter(token=reset_password_token.key).first()
+        
 
         if not ExtendToken.objects.filter(token=reset_password_token.key).exists():
            
@@ -78,6 +78,8 @@ class validar_token(APIView):
                 token=reset_password_token.key,
                 count_integer=0
             )
+
+        extend_token1=ExtendToken.objects.filter(token=reset_password_token.key).first()
     
         if reset_password_token.created_at <= now_minus_expiry_time:
             ExtendToken.objects.filter(token=reset_password_token.key).delete()
