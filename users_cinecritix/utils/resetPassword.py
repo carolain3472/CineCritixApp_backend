@@ -18,13 +18,13 @@ def sendResetPasswordEmail(reset_password_token):
     email_html_content = f"<html><body><p>{greetings}</p>Por favor, usa este token para CineCritix App:<b> {forgot_password_token}</b></body></html>"
 
     message = Mail(
-        from_email=config('EMAIL_SENDER'),
+        from_email='pruebadesarrollo335@gmail.com',
         to_emails=[user.email],
         subject=f"Recuperar contraseña de CineCritix App. {str(datetime.now())}",
         html_content=email_html_content
     )
 
-    sendgrid_client = SendGridAPIClient(api_key=config('SEND_API'))
+    sendgrid_client = SendGridAPIClient(api_key='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')
 
     response = sendgrid_client.send(message)
 
