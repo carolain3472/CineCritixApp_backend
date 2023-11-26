@@ -274,6 +274,31 @@ class LoginView(APIView):
         print("No existe el usuario o contra incorrecta")
 
         return Response({'valid': False})
+    
+
+class DatosUsuarioObtener(APIView):
+    permission_classes = [AllowAny]  
+    authentication_classes = [] 
+        
+    def post(self, request):
+        email = request.data.get('email')
+        try:
+            # Buscar al usuario por cédula en la base de datos
+            usuario = CustomUser.objects.get(email=email)
+
+            return Response({'valid': True,  
+                                     'user_id': usuario.id,
+                                     'user_documento': usuario.documento,
+                                     'user_nombre': usuario.nombre,
+                                     'user_apellido': usuario.apellido,
+                                     'user_email': usuario.email,
+                                     'user_profile': usuario.foto_perfil.name
+                                     })
+            
+        except CustomUser.DoesNotExist:
+            raise AuthenticationFailed('No existe este usuario autentificado')
+
+        return Response({'valid': False})
 
 
 class DarmeDeBaja(APIView):
@@ -380,7 +405,7 @@ class UpdateDatosBasicos(APIView):
         nombre= request.data.get('nombre')
         apellido= request.data.get('apellido')
         email= request.data.get("email")
-        imagen_seleccionada = request.data.get('imagen_seleccionada')
+    
         
         try:
             user = CustomUser.objects.get(email=email)
@@ -392,9 +417,9 @@ class UpdateDatosBasicos(APIView):
                 user.apellido=apellido
                 user.save()
                 print(user)
-                return Response(status=status.HTTP_200_OK)
+                return Response({'valid': True}, status=status.HTTP_200_OK) 
             else:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response({'valid': False}, status=status.HTTP_406_NOT_ACCEPTABLE) 
 
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -421,7 +446,7 @@ class UpdateFotoPerfil(APIView):
                     superuser.save()
                     return Response({'exito': 'La imagen seleccionada perfil se actualizó con éxito.'}, status=status.HTTP_202_ACCEPTED)
             else:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response({'valid': False}, status=status.HTTP_404_NOT_FOUND) 
 
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -441,7 +466,7 @@ class EliminarFotoPerfil(APIView):
                return Response({'exito': 'La imagen default se actualizó con éxito.'}, status=status.HTTP_200_OK)
 
             else:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response({'valid': False}, status=status.HTTP_403_FORBIDDEN) 
 
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -457,16 +482,16 @@ class UpdateContraseña(APIView):
             user = CustomUser.objects.get(email=email)
             token_exists = Token.objects.filter(user=user).exists()
             if contrasena=='' or contrasena==' ':
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response({'valid': False}, status=status.HTTP_404_NOT_FOUND) 
 
             if token_exists:
                 user.set_password(contrasena)
                 user.save()
                 print(contrasena)
-                return Response(status=status.HTTP_200_OK)
+                return Response({'valid': True}, status=status.HTTP_200_OK) 
             else:
                 # El token no está asociado al usuario
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response({'valid': False}, status=status.HTTP_404_NOT_FOUND) 
 
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -480,7 +505,7 @@ class Logout(APIView):
             user = CustomUser.objects.get(email=email)
             Token.objects.filter(user=user).delete()
             
-            return Response(status=status.HTTP_200_OK)
+            return Response({'valid': True}, status=status.HTTP_200_OK) 
         except CustomUser.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'valid': False}, status=status.HTTP_404_NOT_FOUND) 
     
