@@ -18,3 +18,6 @@ coreapi
 Pillow
 dj-database-url
 gunicorn
+django-rest-passwordreset
+sendgrid
+python-decouple

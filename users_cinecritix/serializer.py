@@ -6,7 +6,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['nombre', 'email', 'password', 'is_active', 'is_superuser']
+        fields = ['nombre', 'apellido','email', 'password', 'foto_perfil', 'is_active', 'is_superuser']
 
 
 class ActorSerializer(serializers.ModelSerializer):

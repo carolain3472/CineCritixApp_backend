@@ -1,7 +1,13 @@
+import datetime
+import os
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.db import models
-
+from django.dispatch import receiver
+from django_rest_passwordreset.signals import reset_password_token_created
+from .utils.resetPassword import sendResetPasswordEmail
+from django_rest_passwordreset.models import ResetPasswordToken
+from django.utils import timezone
 
 class MyUserManager(BaseUserManager):
     def create_user(self, documento, password, **extra_fields):
@@ -29,6 +35,8 @@ class MyUserManager(BaseUserManager):
         
         return self.create_user(documento, password, **extra_fields)
 
+
+
 class CustomUser(AbstractUser):
 
     def validate_min_length(value):
@@ -43,7 +51,10 @@ class CustomUser(AbstractUser):
 
     nombre = models.CharField(max_length=30, blank=True)
     apellido = models.CharField(max_length=30, blank=True)
-   
+
+    foto_perfil = models.ImageField('Imagen', upload_to='perfil/',  default='perfil/usuario_default.png' ,max_length=255, null=True, blank=True)
+    deactivated_timestamp = models.DateTimeField(null=True, blank=True)
+
     username = None
 
     objects = MyUserManager()
@@ -60,6 +71,13 @@ class CustomUser(AbstractUser):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
+    @receiver(reset_password_token_created)
+    def password_reset_token_created(sender, instance, reset_password_token, **kwargs):
+        sendResetPasswordEmail(reset_password_token)
+
+    def deactivate_user(self):
+        self.deactivated_timestamp = datetime.now()
+        self.save()
 
 class Actor(models.Model):
     nombre_actor = models.CharField(max_length=30)
