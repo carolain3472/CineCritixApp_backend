@@ -38,6 +38,11 @@ ALLOWED_HOSTS = [
 
 CORS_ALLOWED_ALL_ORIGINS = True
 
+
+# Configuración para archivos de medios
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -51,6 +56,7 @@ INSTALLED_APPS = [
     'coreapi',
     'rest_framework.authtoken',
     'rest_framework',
+    'django_rest_passwordreset',
     'users_cinecritix',
     'modulo_peliculas_cinecritix',
     'modulo_series_cinecritix'
@@ -101,6 +107,7 @@ DATABASES = {
 
 database_url = os.environ.get("DATABASE_URL")
 DATABASES["default"]=dj_database_url.parse(database_url)
+#DATABASES["default"]=dj_database_url.parse("postgres://cinecritixapp_bd_user:XQCQrEZrRJ3MGlKZHt3Yi2vj5zEoFbyh@dpg-cksts30168ec73ears40-a.oregon-postgres.render.com/cinecritixapp_bd")
 
 #"postgres://cinecritixapp_bd_user:XQCQrEZrRJ3MGlKZHt3Yi2vj5zEoFbyh@dpg-cksts30168ec73ears40-a.oregon-postgres.render.com/cinecritixapp_bd"
 AUTH_USER_MODEL = 'users_cinecritix.CustomUser'
@@ -143,3 +150,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+DJANGO_REST_MULTITOKENAUTH_RESET_TOKEN_EXPIRY_TIME= 0.03
