@@ -15,11 +15,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.conf import settings
+from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include(('users_cinecritix.urls', 'default'))),
     path('peliculas/', include(('modulo_peliculas_cinecritix.urls', 'peliculas'))),
     path('series/', include(('modulo_series_cinecritix.urls', 'series'))),
+    path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+]
+
+# Configuración para servir archivos estáticos y de medios durante el desarrollo
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {
+        'document_root': settings.MEDIA_ROOT,
+    })
 ]
