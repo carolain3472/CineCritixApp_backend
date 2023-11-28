@@ -95,7 +95,7 @@ class validar_token(APIView):
 
             if extend_token1.count_integer==3:
                 return Response({"mensaje": "Te queda solo un intento",  "contador":extend_token1.count_integer},
-                            status=status.HTTP_409_CONFLICT)
+                            status=status.HTTP_428_PRECONDITION_REQUIRED)
 
             if extend_token1.count_integer>=4:
                 ExtendToken.objects.filter(token=reset_password_token.key).delete()
