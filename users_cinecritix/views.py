@@ -135,7 +135,7 @@ class validar_token(APIView):
             # Delete all password reset tokens for this user
             ResetPasswordToken.objects.filter(user=reset_password_token.user).delete()
 
-        return Response({'mensaje': 'OK',  "contador":extend_token1.count_integer}, status=status.HTTP_200_OK)
+        return Response({"mensaje": "OK",  "contador":extend_token1.count_integer}, status=status.HTTP_200_OK)
 
 
 class UsuariosList(viewsets.ModelViewSet):
