@@ -95,7 +95,7 @@ class validar_token(APIView):
 
             if extend_token1.count_integer==3:
                 return Response({"mensaje": "Te queda solo un intento",  "contador":extend_token1.count_integer},
-                            status=status.HTTP_428_PRECONDITION_REQUIRED)
+                            status=status.HTTP_409_CONFLICT)
 
             if extend_token1.count_integer>=4:
                 ExtendToken.objects.filter(token=reset_password_token.key).delete()
@@ -106,7 +106,7 @@ class validar_token(APIView):
                 tiempo= usuario.deactivated_timestamp
 
                 return Response({"mensaje": "Ya no tienes mas intentos, token eliminado",  "contador":extend_token1.count_integer},
-                            status=status.HTTP_403_FORBIDDEN)
+                            status=status.HTTP_428_PRECONDITION_REQUIRED)
 
             return Response({"mensaje": "Fallo en obtener token",  "contador":extend_token1.count_integer},
                             status=status.HTTP_406_NOT_ACCEPTABLE)
