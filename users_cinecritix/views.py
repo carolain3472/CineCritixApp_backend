@@ -449,7 +449,7 @@ class UpdateFotoPerfil(APIView):
             iconos_folder = os.path.join('media', 'iconos')
 
             if token_exists:
-                if imagen_seleccionada.endswith(('.jpg', '.png', '.jpeg')) and imagen_seleccionada in os.listdir(iconos_folder):
+                if imagen_seleccionada in os.listdir(iconos_folder):
                     superuser.foto_perfil = os.path.join('iconos/', imagen_seleccionada)
                     superuser.save()
                     return Response({'exito': 'La imagen se actualizó con éxito con un icono.'}, status=status.HTTP_202_ACCEPTED)
