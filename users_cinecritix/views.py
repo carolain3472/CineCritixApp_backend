@@ -453,10 +453,10 @@ class UpdateFotoPerfil(APIView):
                     superuser.save()
                     return Response({'exito': 'La imagen seleccionada perfil se actualizó con éxito.'}, status=status.HTTP_202_ACCEPTED)
             else:
-                return Response({'valid': False}, status=status.HTTP_404_NOT_FOUND) 
+                return Response({'exito': 'error'}, status=status.HTTP_404_NOT_FOUND) 
 
         except CustomUser.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'exito': 'error'}, status=status.HTTP_404_NOT_FOUND)
 
 class EliminarFotoPerfil(APIView):
     permission_classes = [AllowAny]  
