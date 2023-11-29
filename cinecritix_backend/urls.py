@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
+from django.conf.urls.static import static
 from django.views.static import serve
 
 urlpatterns = [
@@ -25,11 +26,11 @@ urlpatterns = [
     path('peliculas/', include(('modulo_peliculas_cinecritix.urls', 'peliculas'))),
     path('series/', include(('modulo_series_cinecritix.urls', 'series'))),
     path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
-]
+] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
 
-# Configuración para servir archivos estáticos y de medios durante el desarrollo
+""" # Configuración para servir archivos estáticos y de medios durante el desarrollo
 urlpatterns += [
     re_path(r'^media/(?P<path>.*)$', serve, {
         'document_root': settings.MEDIA_ROOT,
     })
-]
+] """
