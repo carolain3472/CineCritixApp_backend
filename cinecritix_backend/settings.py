@@ -39,9 +39,9 @@ ALLOWED_HOSTS = [
 CORS_ALLOWED_ALL_ORIGINS = True
 
 
-# Configuración para archivos de medios
+""" # Configuración para archivos de medios
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') """
 
 # Application definition
 
@@ -158,3 +158,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DJANGO_REST_MULTITOKENAUTH_RESET_TOKEN_EXPIRY_TIME= 0.03
 SEND_API = os.getenv('SEND_API')
 EMAIL_SENDER = os.getenv('EMAIL_SENDER')
+
+STATIC_URL= 'static/'
+STATICFILES_DIRS= [
+    BASE_DIR / "static"
+]
+
+MEDIA_ROOT = BASE_DIR / "files"
+MEDIA_URL = "/media-files/"
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'bucket-final-este-si-con-fe'
+STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
