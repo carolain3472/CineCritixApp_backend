@@ -31,7 +31,7 @@ from .models import CustomUser
 from .serializer import UsuarioSerializer
 import os
 from django_rest_passwordreset.models import ResetPasswordToken
-
+from storages.backends.gcloud import GoogleCloudStorage
 import unicodedata
 from datetime import timedelta
 
@@ -293,14 +293,19 @@ class DatosUsuarioObtener(APIView):
             # Buscar al usuario por cédula en la base de datos
             usuario = CustomUser.objects.get(email=email)
 
-            return Response({'valid': True,  
-                                     'user_id': usuario.id,
-                                     'user_documento': usuario.documento,
-                                     'user_nombre': usuario.nombre,
-                                     'user_apellido': usuario.apellido,
-                                     'user_email': usuario.email,
-                                     'user_profile': usuario.foto_perfil.name
-                                     })
+            # Obtener la URL de la imagen del almacenamiento de Google Cloud Storage
+            storage = GoogleCloudStorage()
+            profile_image_url = storage.url(usuario.foto_perfil.name)
+
+            return Response({
+                'valid': True,
+                'user_id': usuario.id,
+                'user_documento': usuario.documento,
+                'user_nombre': usuario.nombre,
+                'user_apellido': usuario.apellido,
+                'user_email': usuario.email,
+                'user_profile': profile_image_url,
+            })
             
         except CustomUser.DoesNotExist:
             raise AuthenticationFailed('No existe este usuario autentificado')
