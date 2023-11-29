@@ -21,3 +21,4 @@ gunicorn
 django-rest-passwordreset
 sendgrid
 python-decouple
+django-storages[google]
