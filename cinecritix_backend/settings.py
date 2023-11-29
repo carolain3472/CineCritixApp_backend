@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
     # Agrega cualquier otro host que necesites permitir
 ]
 
+
 CORS_ALLOWED_ALL_ORIGINS = True
 
 
