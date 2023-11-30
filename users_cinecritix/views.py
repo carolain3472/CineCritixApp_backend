@@ -475,13 +475,70 @@ class EliminarFotoPerfil(APIView):
             if token_exists:
                superuser.foto_perfil = 'perfil/usuario_default.png'
                superuser.save()
-               return Response({'exito': 'La imagen default se actualizó con éxito.'}, status=status.HTTP_200_OK)
+               return Response({'exito': 'OK'}, status=status.HTTP_200_OK)
 
             else:
-                return Response({'valid': False}, status=status.HTTP_403_FORBIDDEN) 
+                return Response({'exito': 'False'}, status=status.HTTP_403_FORBIDDEN) 
 
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+class EstablecerIcono(APIView):
+    permission_classes = [AllowAny]  
+    authentication_classes = [] 
+    def post(self, request):
+        email = request.data.get('email')
+        icono = request.data.get('icono')
+        try:
+            superuser = CustomUser.objects.get(email=email)
+            token_exists = Token.objects.filter(user=superuser).exists()
+
+            if token_exists:
+                if icono=='icono1.png':
+                    superuser.foto_perfil = 'iconos/icono1.png'
+                    superuser.save()
+                if icono=='icono2.png':
+                    superuser.foto_perfil = 'iconos/icono2.png'
+                    superuser.save()
+                if icono=='icono3.png':
+                    superuser.foto_perfil = 'iconos/icono3.png'
+                    superuser.save()
+                if icono=='icono4.png':
+                    superuser.foto_perfil = 'iconos/icono4.png'
+                    superuser.save()
+                if icono=='icono5.png':
+                    superuser.foto_perfil = 'iconos/icono5.png'
+                    superuser.save()
+                if icono=='icono6.png':
+                    superuser.foto_perfil = 'iconos/icono6.png'
+                    superuser.save()
+                if icono=='icono7.png':
+                    superuser.foto_perfil = 'iconos/icono7.png'
+                    superuser.save()
+                if icono=='icono8.png':
+                    superuser.foto_perfil = 'iconos/icono8.png'
+                    superuser.save()
+                if icono=='icono9.png':
+                    superuser.foto_perfil = 'iconos/icono9.png'
+                    superuser.save()
+                if icono=='icono10.png':
+                    superuser.foto_perfil = 'iconos/icono10.png'
+                    superuser.save()
+                if icono=='icono11.png':
+                    superuser.foto_perfil = 'iconos/icono11.png'
+                    superuser.save()
+                if icono=='icono12.png':
+                    superuser.foto_perfil = 'iconos/icono12.png'
+                    superuser.save()
+                   
+                return Response({'exito': 'OK'}, status=status.HTTP_200_OK)
+
+            else:
+                return Response({'exito': 'False'}, status=status.HTTP_403_FORBIDDEN) 
+
+        except CustomUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 class UpdateContraseña(APIView):
     permission_classes = [AllowAny]  

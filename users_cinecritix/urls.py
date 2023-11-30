@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .views import LoginView
 from .views import RegisterUserView
 from .views import Logout
-from .views import UpdateContraseña, Saludo, UpdateDatosBasicos, DarmeDeBaja, EliminarFotoPerfil,UserProfileView,UpdateFotoPerfil
+from .views import UpdateContraseña, Saludo, UpdateDatosBasicos, DarmeDeBaja, EliminarFotoPerfil,UserProfileView,UpdateFotoPerfil,EstablecerIcono
 from rest_framework.documentation import include_docs_urls
 from django.conf import Settings
 from django.views.static import serve
@@ -32,6 +32,9 @@ urlpatterns = [
     path('profile/<int:pk>/', UserProfileView.as_view(), name='user-profile'),
     path("validate_token/", validar_token.as_view(), name="token-validate"),
     path("obtener-informacion/", DatosUsuarioObtener.as_view(), name="obtener_informacion"),
+    path("enviar-icono/", EstablecerIcono.as_view(), name="establecer_icono"),
+
+    
 
     
     

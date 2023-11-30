@@ -52,7 +52,7 @@ class CustomUser(AbstractUser):
     nombre = models.CharField(max_length=30, blank=True)
     apellido = models.CharField(max_length=30, blank=True)
 
-    foto_perfil = models.ImageField('Imagen', upload_to='perfil/',  default='perfil/usuario_default.png' ,max_length=255, null=True, blank=True)
+    foto_perfil = models.ImageField('Imagen', upload_to='perfil/',  default='https://storage.googleapis.com/bucket-final-este-si-con-fe/perfil/usuario_default.png?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=accesocinecritixapp%40citric-chemist-406600.iam.gserviceaccount.com%2F20231130%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20231130T045050Z&X-Goog-Expires=86400&X-Goog-SignedHeaders=host&X-Goog-Signature=59dc3ce8a51505f143a5c05c68ce6bac928ae510655e24a6263615406c7ccaeb221b0282eda5159baaf3af56514ac2a0a735c25447c6eee4180dace41c590a634522b0e6098efec80790286e53a6de66d1ccb8da01eda1da11670719500e96b61df6dbace97bb851220ae457c9d306fa5190c79c8301ad9da82e7192ae767e37d241e79b6537696f609d8ee6da00546f250266265ff737cccc1de63fb5ca9a4bbf8c4bb078c884de7bed2515f69a9675c61df7e6a891e698d6a4e3986519428d59b1f26bfae34b21dd44cfd66c79ca6a9628b1730b4172f9779dcd4beedc78274804304517a07c115766b71ce22b18dc6df346e927dd8acd78c38eb5a8e09e5a' ,max_length=10000, null=True, blank=True)
     deactivated_timestamp = models.DateTimeField(null=True, blank=True)
 
     username = None
