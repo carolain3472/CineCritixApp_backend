@@ -493,6 +493,8 @@ class EstablecerIcono(APIView):
     def post(self, request):
         email = request.data.get('email')
         icono = request.data.get('icono')
+
+        storage = GoogleCloudStorage()
         try:
             superuser = CustomUser.objects.get(email=email)
             token_exists = Token.objects.filter(user=superuser).exists()
@@ -534,8 +536,9 @@ class EstablecerIcono(APIView):
                 if icono=='icono12.png':
                     superuser.foto_perfil = 'iconos/icono12.png'
                     superuser.save()
-                   
-                return Response({'exito': 'OK'}, status=status.HTTP_200_OK)
+            
+                profile_image_url = storage.url(superuser.foto_perfil.name)
+                return Response({'exito': profile_image_url}, status=status.HTTP_200_OK)
 
             else:
                 return Response({'exito': 'False'}, status=status.HTTP_403_FORBIDDEN) 
