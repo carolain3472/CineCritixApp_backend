@@ -446,17 +446,12 @@ class UpdateFotoPerfil(APIView):
         try:
             superuser = CustomUser.objects.get(email=email)
             token_exists = Token.objects.filter(user=superuser).exists()
-            iconos_folder = os.path.join('media', 'iconos')
+  
 
             if token_exists:
-                if imagen_seleccionada in os.listdir(iconos_folder):
-                    superuser.foto_perfil = os.path.join('iconos/', imagen_seleccionada)
-                    superuser.save()
-                    return Response({'exito': 'La imagen se actualizó con éxito con un icono.'}, status=status.HTTP_202_ACCEPTED)
-                else:
-                    superuser.foto_perfil = os.path.join('perfil/', imagen_seleccionada)
-                    superuser.save()
-                    return Response({'exito': 'La imagen seleccionada perfil se actualizó con éxito.'}, status=status.HTTP_202_ACCEPTED)
+                superuser.foto_perfil =  imagen_seleccionada
+                superuser.save()
+                return Response({'exito': 'La imagen seleccionada perfil se actualizó con éxito.'}, status=status.HTTP_202_ACCEPTED)
             else:
                 return Response({'exito': 'error'}, status=status.HTTP_404_NOT_FOUND) 
 
