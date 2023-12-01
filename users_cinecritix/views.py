@@ -442,6 +442,7 @@ class UpdateFotoPerfil(APIView):
     def post(self, request):
         email = request.data.get('email')
         imagen_seleccionada = request.data.get('imagen_seleccionada')
+        storage = GoogleCloudStorage()
 
         try:
             superuser = CustomUser.objects.get(email=email)
@@ -451,7 +452,8 @@ class UpdateFotoPerfil(APIView):
             if token_exists:
                 superuser.foto_perfil =  imagen_seleccionada
                 superuser.save()
-                return Response({'exito': 'La imagen seleccionada perfil se actualizó con éxito.'}, status=status.HTTP_202_ACCEPTED)
+                profile_image_url = storage.url(superuser.foto_perfil.name)
+                return Response({'exito': profile_image_url}, status=status.HTTP_202_ACCEPTED)
             else:
                 return Response({'exito': 'error'}, status=status.HTTP_404_NOT_FOUND) 
 
