@@ -85,7 +85,9 @@ class Actor(models.Model):
     fecha_nacimiento = models.DateField()
     biografia = models.TextField()
     nacionalidad= models.CharField(max_length=30)
-
+    def __str__(self):
+        return self.nombre_actor
+    
 class ExtendToken(models.Model):
     token = models.CharField(max_length=100)
     count_integer = models.IntegerField(default=0, verbose_name="Contador de intentos")
@@ -93,3 +95,5 @@ class ExtendToken(models.Model):
 class Genero(models.Model):
     nombre_genero = models.CharField(max_length=30)
     descripcion_genero = models.CharField(max_length=300)
+    def __str__(self):
+        return self.nombre_genero
