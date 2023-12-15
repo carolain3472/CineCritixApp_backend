@@ -1,3 +1,5 @@
+from turtle import pd
+from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -5,6 +7,7 @@ from .models import Pelicula, Puntuacion_pelicula, Favorito_pelicula, Comentario
 from .serializer import PeliculaSerializer, PuntuacionPeliculaSerializer, FavoritoPeliculaSerializer, ComentariosPeliculaSerializer
 from users_cinecritix.serializer import ActorSerializer
 from users_cinecritix.models import Actor, Genero
+
 
 class Crear_pelicula(APIView):
     def post(self, request):

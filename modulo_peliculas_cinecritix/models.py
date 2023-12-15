@@ -5,6 +5,7 @@ from users_cinecritix.models import *
 
 class Pelicula(models.Model):
 
+    imagen_pelicula= models.ImageField('Imagen', upload_to='peliculas/' ,max_length=10000, null=True, blank=True)
     titulo_pelicula = models.CharField(unique=True, max_length=30, blank=False, null=False)
     director_pelicula = models.CharField(max_length=30, blank=False, null=False)
     sipnosis_pelicula = models.CharField(max_length=250, blank=False, null=False)
@@ -13,9 +14,8 @@ class Pelicula(models.Model):
     portada_pelicula = models.ImageField(null=True)
     genero = models.ManyToManyField(Genero, related_name='genero_peliculas')
     actores = models.ManyToManyField(Actor, related_name='peliculas_actuadas')
-
-    ##link de pelicula 
-    ##link de trailer
+    link_pelicula = models.TextField(null= True, blank= True,  default="No se encontró link")
+    link_trailer = models.TextField(null= True, blank= True,  default="No se encontró link")
 
 class Puntuacion_pelicula(models.Model):
 

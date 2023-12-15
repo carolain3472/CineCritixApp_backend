@@ -80,6 +80,7 @@ class CustomUser(AbstractUser):
         self.save()
 
 class Actor(models.Model):
+    imagen_actor= models.ImageField('Imagen', upload_to='actores/' ,max_length=10000, null=True, blank=True)
     nombre_actor = models.CharField(max_length=30)
     fecha_nacimiento = models.DateField()
     biografia = models.TextField()
