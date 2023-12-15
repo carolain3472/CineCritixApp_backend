@@ -7,6 +7,8 @@ from .models import Pelicula, Puntuacion_pelicula, Favorito_pelicula, Comentario
 from .serializer import PeliculaSerializer, PuntuacionPeliculaSerializer, FavoritoPeliculaSerializer, ComentariosPeliculaSerializer
 from users_cinecritix.serializer import ActorSerializer
 from users_cinecritix.models import Actor, Genero
+from rest_framework.permissions import AllowAny
+from storages.backends.gcloud import GoogleCloudStorage
 
 
 class Crear_pelicula(APIView):
@@ -18,6 +20,34 @@ class Crear_pelicula(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class DatosPeliculaObtener(APIView):
+    permission_classes = [AllowAny]  
+    authentication_classes = [] 
+        
+    def post(self, request):
+        pelicula_id = request.data.get('pelicula')
+
+        pelicula = Pelicula.objects.get(id=pelicula_id)
+
+        storage = GoogleCloudStorage()
+        profile_pelicula_url = storage.url(pelicula.imagen_pelicula.name)
+
+        return Response({
+                'valid': True,
+                'titulo_pelicula': pelicula.titulo_pelicula,
+                'director_pelicula': pelicula.director_pelicula,
+                'sipnosis_pelicula': pelicula.sipnosis_pelicula,
+                'imagen_pelicula': profile_pelicula_url,
+                'duracion_pelicula': pelicula.duracion_pelicula,
+                'fecha_estreno_pelicula': pelicula.fecha_estreno_pelicula,
+                'genero': pelicula.genero,
+                'actores': pelicula.actores,
+                'link_pelicula': pelicula.link_pelicula,
+                'link_trailer': pelicula.link_trailer,
+                
+            })
+      
 
 class Promedio_total_puntuacioon_pelicula(APIView):
     def get(self, request, pelicula_id):
