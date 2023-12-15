@@ -44,4 +44,5 @@ urlpatterns = [
     path('filtrar_peliculas_actor/<int:actor_id>/', FiltrarPeliculasPorActor.as_view(),name='filtrar_peliculas_actor'),
     #Filtrar por genero 
     path('filtrar_peliculas_genero/<int:genero_id>/', FiltrarPeliculasPorGenero.as_view(),name='filtrar_peliculas_genero'),
+
 ]

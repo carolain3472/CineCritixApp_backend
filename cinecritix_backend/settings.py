@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import dj_database_url
 import os
+import django
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,10 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
-#SECRET_KEY = 'SFXGHDFXBGR852S613DV1S65HSR12H1D65GB1X5S1DEG51RSBFS1B5'
-#DEBUG = True
+#SECRET_KEY = os.environ.get("SECRET_KEY")
+#DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+SECRET_KEY = 'SFXGHDFXBGR852S613DV1S65HSR12H1D65GB1X5S1DEG51RSBFS1B5'
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '*'
@@ -105,7 +106,7 @@ DATABASES = {
 } 
 
 # Database configuration using dj-database-url
-#database_url = os.environ.get("DATABASE_URL")
+database_url = os.environ.get("DATABASE_URL")
 DATABASES["default"]=dj_database_url.parse("postgres://cinecritixapp_bd_wdxx_user:NyMHPaTSWbmBtbML0Za1cKaEF3dpxfAq@dpg-clha67fjc5ks73ekhh3g-a.ohio-postgres.render.com/cinecritixapp_bd_wdxx")
 
 
