@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 from django.views.decorators.csrf import csrf_exempt
-from .views import Crear_pelicula
+from .views import Crear_pelicula, DatosPeliculaObtener
 from .views import Crear_puntuacion_pelicula
 from .views import Agregar_comentario_pelicula
 from .views import Agregar_pelicula_favoritos
