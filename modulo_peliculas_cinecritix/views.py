@@ -89,6 +89,9 @@ class Agregar_pelicula_favoritos(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class Agregar_comentario_pelicula(APIView):
+    permission_classes = [AllowAny]  
+    authentication_classes = []
+    
     def post(self, request):
         datos = request.data
         serializer = ComentariosPeliculaSerializer(data=datos)
