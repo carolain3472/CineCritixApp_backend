@@ -39,6 +39,8 @@ urlpatterns = [
     #listar actores
     path('Listar_actores/', ListarActores.as_view(),name='Listar_actores'),
 
+    path('datos-peliculas/', DatosPeliculaObtener.as_view(),name='datos_pelicula'),
+
 
     #Filtrar por actor una pelicula
     path('filtrar_peliculas_actor/<int:actor_id>/', FiltrarPeliculasPorActor.as_view(),name='filtrar_peliculas_actor'),
