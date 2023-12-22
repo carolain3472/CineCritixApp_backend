@@ -36,11 +36,7 @@ class DatosPeliculaObtener(APIView):
         
         pelicula_serializer = PeliculaSerializer(pelicula)
 
-        return Response({
-            'valid': True,
-            'pelicula': pelicula_serializer.data, 
-            'pelicula_imagen': profile_pelicula_url
-        })
+        return Response({pelicula_serializer.data})
         
 class Promedio_total_puntuacioon_pelicula(APIView):
     def get(self, request, pelicula_id):
