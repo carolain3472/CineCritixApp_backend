@@ -21,6 +21,7 @@ class Crear_pelicula(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
 class DatosPeliculaObtener(APIView):
     permission_classes = [AllowAny]  
     authentication_classes = [] 
@@ -32,23 +33,15 @@ class DatosPeliculaObtener(APIView):
 
         storage = GoogleCloudStorage()
         profile_pelicula_url = storage.url(pelicula.imagen_pelicula.name)
+        
+        pelicula_serializer = PeliculaSerializer(pelicula)
 
         return Response({
-                'valid': True,
-                'titulo_pelicula': pelicula.titulo_pelicula,
-                'director_pelicula': pelicula.director_pelicula,
-                'sipnosis_pelicula': pelicula.sipnosis_pelicula,
-                'imagen_pelicula': profile_pelicula_url,
-                'duracion_pelicula': pelicula.duracion_pelicula,
-                'fecha_estreno_pelicula': pelicula.fecha_estreno_pelicula,
-                'genero': pelicula.genero,
-                'actores': pelicula.actores,
-                'link_pelicula': pelicula.link_pelicula,
-                'link_trailer': pelicula.link_trailer,
-                
-            })
-      
-
+            'valid': True,
+            'pelicula': pelicula_serializer.data, 
+            'pelicula_imagen': profile_pelicula_url
+        })
+        
 class Promedio_total_puntuacioon_pelicula(APIView):
     def get(self, request, pelicula_id):
         puntuaciones = Puntuacion_pelicula.objects.filter(pelicula=pelicula_id)
