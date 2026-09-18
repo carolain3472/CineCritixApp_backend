@@ -1,2 +1,17 @@
 venv/
 .env
+# Credenciales — nunca subir
+.env
+.env.*
+!.env.example
+credenciales/
+*-*.json.key
+citric-chemist-*.json
+
+# Base de datos local
+db.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
